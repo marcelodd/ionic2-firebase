@@ -13,23 +13,22 @@ import firebase from 'firebase';
 
 @Injectable()
 export class AuthService {
-    user: any;
-
     constructor(
         private af: AngularFire,
         private db: DataService,
         private platform: Platform
     ) { }
 
-    getUser() {
+    getUser(): Observable<any> {
         return Observable.create(observer => {
             this.af.auth.subscribe(authData => {
                 if (authData) {
                     this.db.getObject('users/' + authData.uid)
                         .subscribe(userData => {
                             console.log(userData);
-                            this.user = userData;
                             observer.next(userData);
+                        }, err => {
+                            observer.error(err);
                         });
                 } else {
                     observer.error();
@@ -82,7 +81,7 @@ export class AuthService {
         });
     }
 
-    loginWithFacebook() {
+    loginWithFacebook(): Observable<any> {
         return Observable.create(observer => {
             if (this.platform.is('cordova')) {
                 Facebook.login(['public_profile', 'email'])
@@ -90,7 +89,7 @@ export class AuthService {
                         let provider = firebase.auth.FacebookAuthProvider.credential(facebookData.authResponse.accessToken);
                         firebase.auth().signInWithCredential(provider)
                             .then(firebaseData => {
-                                this.af.database.list('users').update(firebaseData.uid => {
+                                this.af.database.list('users').update(firebaseData.uid, {
                                     name: firebaseData.displayName,
                                     email: firebaseData.email,
                                     provider: 'facebook',
@@ -133,7 +132,7 @@ export class AuthService {
         });
     }
 
-    logout() {
-        this.af.auth.logout();
+    logout(): Promise<void> {
+        return this.af.auth.logout();
     }
 }

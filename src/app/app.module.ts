@@ -1,5 +1,5 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,13 @@ import { FormsModule } from '@angular/forms';
 // Pages
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
+
+import { ForgotPasswordPage } from '../pages/auth/forgot-password/forgot-password';
+import { AuthPage } from '../pages/auth/home/home';
+import { LoginEmailPage } from '../pages/auth/login-email/login-email';
+import { SignUpPage } from '../pages/auth/sign-up/sign-up';
+import { HomePage } from '../pages/home/home';
+import { TermsOfServicePage } from '../pages/terms-of-service/terms-of-service';
 
 // Providers
 import { AuthService } from '../services/auth.service';
@@ -26,21 +33,32 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     Page1,
-    Page2
+    Page2,
+    ForgotPasswordPage,
+    AuthPage,
+    LoginEmailPage,
+    SignUpPage,
+    HomePage,
+    TermsOfServicePage
   ],
   imports: [
-    AngularFireModule.initializeApp(firebaseConfig),
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig),
     FormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     Page1,
-    Page2
+    Page2,
+    ForgotPasswordPage,
+    AuthPage,
+    LoginEmailPage,
+    SignUpPage,
+    HomePage,
+    TermsOfServicePage
   ],
   providers: [
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthService,
     DataService
   ]
